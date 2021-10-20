@@ -30,7 +30,7 @@
 #       register: test_vagrant
 #       changed_when: false
 #       failed_when: test_vagrant.stdout == ""
-      
+
 - hosts: CentOS
   become: yes
   remote_user: vagrant
@@ -52,6 +52,43 @@
             gpgkey: https://dl.google.com/linux/linux_signing_key.pub
             state: present
         input_packages_to_install:
+          - gcc
+          - google-chrome-stable
+    
+    - name: Test command virtualbox
+      shell: command -v google-chrome
+      register: test_virtualbox
+      changed_when: false
+      failed_when: test_virtualbox.stdout == ""
+
+    - name: Test command vagrant
+      shell: command -v google-chrome
+      register: test_vagrant
+      changed_when: false
+      failed_when: test_vagrant.stdout == ""
+
+- hosts: RedHat
+  become: yes
+  remote_user: vagrant
+  gather_facts: yes
+  
+  tasks:
+    - include_role:
+        name: ../../
+      vars:
+        input_role_os_distribution: "{{ ansible_distribution }}"
+        input_role_repository_keys:
+        input_role_repositories:
+          - name: google-chrome
+            file: google-chrome
+            description: google-chrome
+            baseurl: http://dl.google.com/linux/chrome/rpm/stable/x86_64
+            gpgcheck: yes
+            enabled: yes
+            gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+            state: present
+        input_packages_to_install:
+          - gcc
           - google-chrome-stable
     
     - name: Test command virtualbox
