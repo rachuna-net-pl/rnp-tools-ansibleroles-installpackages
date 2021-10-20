@@ -1,5 +1,12 @@
----
 - name: "[Ubuntu] Install packages"
   include_tasks: install_ubuntu_packages.yml
   when:
   - input_role_os_distribution == "Ubuntu"
+
+- name: "[CentOS] Install packages"
+  include_tasks: install_centos_packages.yml
+  when:
+  - input_role_os_distribution == "CentOS"
+
+- debug:
+    msg: "{{ input_role_os_distribution }}"

@@ -1,0 +1,37 @@
+---
+- name: "[CentOS] Add repositories"
+  yum_repository:
+    name:          "{{ repository.name          | default(omit) }}"
+    file:          "{{ repository.file          | default(omit) }}"
+    description:   "{{ repository.description   | default(omit) }}"
+    baseurl:       "{{ repository.baseurl       | default(omit) }}"
+    gpgcheck:      "{{ repository.gpgcheck      | default(omit) }}"
+    enabled:       "{{ repository.enabled       | default(omit) }}"
+    gpgkey:        "{{ repository.gpgkey        | default(omit) }}"
+    state:         "{{ repository.state         | default(omit) }}"
+  loop: "{{ input_role_repositories }}"
+  loop_control:
+    loop_var: repository
+  when: input_role_repositories | length > 0
+
+- name: "[CentOS] Initial apt upgrade"
+  yum:
+    name: '*'
+    state: latest
+    update_cache:  true
+  notify: Reboot system
+  when:
+    - input_role_packages_upggrade
+
+- name: "[CentOS] Remove common packages"
+  yum:
+    name: "{{ input_packages_to_remove }}"
+    state: absent
+  when: input_packages_to_remove | length > 0
+
+- name: "[CentOS] Install packages from Repo"
+  yum:
+    name: "{{ input_packages_to_install }}"
+    update_cache:  true
+    state: present
+  when: input_packages_to_install | length > 0

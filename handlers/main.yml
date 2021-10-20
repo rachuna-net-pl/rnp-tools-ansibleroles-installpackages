@@ -1,2 +1,5 @@
----
-# handlers file for .
+- name: Reboot system
+  reboot:
+    reboot_timeout: 3600
+  when:
+    - input_role_enable_restart_server
