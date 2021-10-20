@@ -1,8 +1,11 @@
 all:
   children:
-    ubuntu:
+    Ubuntu:
       hosts:
         192.168.33.100:
+    CentOS:
+      hosts:
+        192.168.33.102:
   # hosts:
   #   192.168.33.101:
   #   192.168.33.102:
