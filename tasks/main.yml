@@ -1,2 +1,5 @@
 ---
-# tasks file for .
+- name: "[Ubuntu] Install packages"
+  include_tasks: install_ubuntu_packages.yml
+  when:
+  - input_role_os_distribution == "Ubuntu"

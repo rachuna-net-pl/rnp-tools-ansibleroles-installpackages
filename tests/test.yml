@@ -1,5 +1,31 @@
----
-- hosts: localhost
-  remote_user: root
-  roles:
-    - .
+- hosts: all
+  become: yes
+  remote_user: vagrant
+  
+  tasks:
+    - include_role:
+        name: ../../
+      vars:
+        input_role_os_distribution: "{{ ansible_distribution }}"
+        input_role_repository_keys:
+          - url: https://apt.releases.hashicorp.com/gpg
+            state: present
+        input_role_repositories:
+          - repo: deb [arch=amd64] https://apt.releases.hashicorp.com focal main
+            filename: hashicorp
+            state: present
+        input_packages_to_install:
+          - virtualbox
+          - vagrant
+    
+    - name: Test command virtualbox
+      shell: command -v virtualbox
+      register: test_virtualbox
+      changed_when: false
+      failed_when: test_virtualbox.stdout == ""
+
+    - name: Test command vagrant
+      shell: command -v vagrant
+      register: test_vagrant
+      changed_when: false
+      failed_when: test_vagrant.stdout == ""
