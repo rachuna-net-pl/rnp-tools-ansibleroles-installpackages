@@ -8,5 +8,7 @@
   when:
   - input_role_os_distribution == "CentOS"
 
-- debug:
-    msg: "{{ input_role_os_distribution }}"
+- name: "[CentOS] Install packages"
+  include_tasks: install_redhat_packages.yml
+  when:
+  - input_role_os_distribution == "RedHat"
