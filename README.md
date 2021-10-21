@@ -1,38 +1,81 @@
-Role Name
+rnp-tools-ansible-roles-installpackages
 =========
 
-A brief description of the role goes here.
+Ansible Role - Install packages
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+![Overwiew](https://gitlab.com/rachuna-net.pl/tools/ansibleroles/rnp-tools-ansibleroles-configuressh/-/raw/master/docs/configurationSSH.png)
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Defaults role values:
+```yaml
+input_role_os_distribution:       "{{ ansible_distribution }}"
+input_role_packages_upggrade:     no
+input_role_enable_restart_server: no
+input_role_repository_keys:       []
+input_role_repositories:          []
+input_role_packages_to_install:   []
+input_role_packages_to_remove:    []
+```
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+- hosts: Ubuntu
+  become: yes
+  remote_user: vagrant
+  gather_facts: yes
+  
+  tasks:
+    - include_role:
+        name: ../../
+      vars:
+        input_role_os_distribution: "{{ ansible_distribution }}"
+        input_role_repository_keys:
+          - url: https://apt.releases.hashicorp.com/gpg
+            state: present
+        input_role_repositories:
+          - repo: deb [arch=amd64] https://apt.releases.hashicorp.com focal main
+            filename: hashicorp
+            state: present
+        input_role_packages_to_install:
+          - virtualbox
+          - vagrant
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- hosts: CentOS, RedHat
+  become: yes
+  remote_user: vagrant
+  gather_facts: yes
+  
+  tasks:
+    - include_role:
+        name: ../../
+      vars:
+        input_role_os_distribution: "{{ ansible_distribution }}"
+        input_role_repository_keys:
+        input_role_repositories:
+          - name: google-chrome
+            file: google-chrome
+            description: google-chrome
+            baseurl: http://dl.google.com/linux/chrome/rpm/stable/x86_64
+            gpgcheck: yes
+            enabled: yes
+            gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+            state: present
+        input_role_packages_to_install:
+          - gcc
+          - google-chrome-stable
+```
 
 License
 -------
 
-BSD
+BSD 3-Clause
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+### Maciej Rachuna
+SysOps/DevOps
