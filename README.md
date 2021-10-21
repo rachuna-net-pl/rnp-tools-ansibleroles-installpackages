@@ -3,7 +3,7 @@ rnp-tools-ansible-roles-installpackages
 
 Ansible Role - Install packages
 
-![Overwiew](https://gitlab.com/rachuna-net.pl/tools/ansibleroles/rnp-tools-ansibleroles-configuressh/-/raw/master/docs/configurationSSH.png)
+![Overwiew](https://gitlab.com/rachuna-net.pl/tools/ansibleroles/rnp-tools-ansibleroles-installpackages/-/raw/develop/docs/installpackages.png)
 
 Role Variables
 --------------
