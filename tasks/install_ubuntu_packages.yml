@@ -36,15 +36,15 @@
 
 - name: "[Ubuntu] Remove common packages"
   apt:
-    name: "{{ input_packages_to_remove }}"
+    name: "{{ input_role_packages_to_remove }}"
     state: absent
-  when: input_packages_to_remove | length > 0
+  when: input_role_packages_to_remove | length > 0
 
 - name: "[Ubuntu] Install packages from Repo"
   apt:
-    name: "{{ input_packages_to_install }}"
+    name: "{{ input_role_packages_to_install }}"
     state: present
-  when: input_packages_to_install | length > 0
+  when: input_role_packages_to_install | length > 0
 
 - name: "[Ubuntu] Remove useless packages from the cache"
   apt:

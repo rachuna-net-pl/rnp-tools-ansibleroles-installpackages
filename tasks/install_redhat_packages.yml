@@ -25,13 +25,13 @@
 
 - name: "[RedHat] Remove common packages"
   yum:
-    name: "{{ input_packages_to_remove }}"
+    name: "{{ input_role_packages_to_remove }}"
     state: absent
-  when: input_packages_to_remove | length > 0
+  when: input_role_packages_to_remove | length > 0
 
 - name: "[RedHat] Install packages from Repo"
   yum:
-    name: "{{ input_packages_to_install }}"
+    name: "{{ input_role_packages_to_install }}"
     update_cache:  true
     state: present
-  when: input_packages_to_install | length > 0
+  when: input_role_packages_to_install | length > 0
