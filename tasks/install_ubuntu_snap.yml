@@ -1,0 +1,7 @@
+- name: Install snap
+  snap:
+    name:    "{{ snap_package.name }}"
+    classic: "{{ snap_package.classic }}"
+  loop:    "{{ input_role_packages_snap_to_install }}"
+  loop_control:
+    loop_var: snap_package
