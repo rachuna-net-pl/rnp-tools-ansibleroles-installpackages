@@ -10,13 +10,14 @@ Role Variables
 
 Defaults role values:
 ```yaml
-input_role_os_distribution:       "{{ ansible_distribution }}"
-input_role_packages_upggrade:     no
-input_role_enable_restart_server: no
-input_role_repository_keys:       []
-input_role_repositories:          []
-input_role_packages_to_install:   []
-input_role_packages_to_remove:    []
+input_role_os_distribution:          "{{ ansible_distribution }}"
+input_role_packages_upggrade:        no
+input_role_enable_restart_server:    no
+input_role_repository_keys:          []
+input_role_repositories:             []
+input_role_packages_to_install:      []
+input_role_packages_to_remove:       []
+input_role_packages_snap_to_install: []
 ```
 
 Example Playbook

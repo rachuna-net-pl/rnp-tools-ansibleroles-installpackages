@@ -12,3 +12,9 @@
   include_tasks: install_redhat_packages.yml
   when:
   - input_role_os_distribution == "RedHat"
+
+- name: "[Ubuntu] Install packages"
+  include_tasks: install_ubuntu_snap.yml
+  when:
+  - input_role_os_distribution == "Ubuntu"
+  - input_role_packages_snap_to_install is defined
