@@ -3,6 +3,11 @@
   when:
   - input_role_os_distribution == "Ubuntu"
 
+- name: "[Debian] Install packages"
+  include_tasks: install_debian_packages.yml
+  when:
+  - input_role_os_distribution == "Debian"
+
 - name: "[CentOS] Install packages"
   include_tasks: install_centos_packages.yml
   when:

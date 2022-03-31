@@ -1,0 +1,55 @@
+- name: "[Debian] Add repositories key"
+  apt_key:
+    url:           "{{ repository_key.url       | default(omit) }}"
+    keyserver:     "{{ repository_key.keyserver | default(omit) }}"
+    id:            "{{ repository_key.id        | default(omit) }}"
+    state:         "{{ repository_key.state     | default(omit) }}"
+  ignore_errors:   "{{ repository_key.ignore_errors | default('false') }}"
+  loop: "{{ input_role_repository_keys }}"
+  loop_control:
+    loop_var: repository_key
+  when: input_role_repository_keys | length > 0
+
+- name: "[Debian] Add Repositories"
+  apt_repository:
+    repo:     "{{ repository.repo | default(omit)  }}"
+    filename: "{{ repository.filename | default(omit)  }}"
+    state:    "{{ repository.state     | default(omit) }}"
+    update_cache: no
+  loop: "{{ input_role_repositories }}"
+  loop_control:
+    loop_var: repository
+  when: input_role_repositories | length > 0
+
+- name: "[Debian] Initial apt update"
+  changed_when: false
+  apt:
+    update_cache:  true
+
+- name: "[Debian] Initial apt upgrade"
+  apt:
+    upgrade: dist
+    update_cache:  true
+  notify: Reboot system
+  when:
+    - input_role_packages_upggrade
+
+- name: "[Debian] Remove common packages"
+  apt:
+    name: "{{ input_role_packages_to_remove }}"
+    state: absent
+  when: input_role_packages_to_remove | length > 0
+
+- name: "[Debian] Install packages from Repo"
+  apt:
+    name: "{{ input_role_packages_to_install }}"
+    state: present
+  when: input_role_packages_to_install | length > 0
+
+- name: "[Debian] Remove useless packages from the cache"
+  apt:
+    autoclean: yes
+
+- name: "[Debian] Remove dependencies that are no longer required"
+  apt:
+    autoremove: yes
